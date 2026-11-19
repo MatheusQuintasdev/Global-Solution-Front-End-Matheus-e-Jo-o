@@ -1,125 +1,41 @@
-# CidadeAtiva - Global Solution 2026/2
+# CidadeAtiva API
 
-Projeto acadêmico de **Front-End Design Engineering (FIAP)** para a Global Solution 2026/2, tema **CitizenTech**.
+API da **Global Solution 2026 da FIAP** para resolver problemas urbanos, como buracos, iluminação quebrada e descarte irregular de lixo.
 
-## Objetivo
+## Entrega
 
-O CidadeAtiva é uma SPA para cadastro e consulta de problemas urbanos, como buracos, iluminação pública, enchentes, lixo e acessibilidade. O projeto propõe organizar a participação cidadã e se relaciona principalmente ao **ODS 11 - Cidades e comunidades sustentáveis**.
+| Entrega | Preencher antes do envio |
+|---|---|
+| Integrantes, RMs e turma | Lucas José Paolillo Vasconcelos — 565561<br>Thiago Dias Gomes — 569675<br>Matheus Nogueira Quintas — 572542<br>João Arthur Maia — 573458<br>Guilherme Ribeiro — 573890 |
+| URL pública da API |  https://cidadeativa-api-gs2026.onrender.com  |
+| Vídeo não listado de até 5 minutos |  |
+## Como rodar
 
-> **Atenção:** trata-se de um protótipo acadêmico e não de um canal oficial da prefeitura.
+Requisitos: JDK 21, Maven 3.9 e acesso ao Oracle da FIAP.
 
-## Tecnologias
+1. Abra o `pom.xml` no IntelliJ como projeto Maven e aguarde o carregamento das dependências.
+2. No SQL Developer, execute `sql/01_criar_tabelas.sql` na ordem do arquivo, apenas se as tabelas ainda não existirem.
+3. Em **Run → Edit Configurations → Environment variables**, configure:
 
-- React 18, Vite e TypeScript
-- Tailwind CSS
-- React Router DOM
-- Fetch API nativa (sem Axios)
-- Lucide React para ícones
-- Vercel para hospedagem do front-end
-- API REST Java desenvolvida na disciplina de Domain Driven Design Using Java
+| Variável | Valor |
+|---|---|
+| `DB_URL` | `jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL` |
+| `DB_USER` | Seu usuário Oracle |
+| `DB_PASSWORD` | Sua senha Oracle |
+| `PORT` | `8081` para executar localmente |
+| `CORS_ORIGINS` | `http://localhost:5173` ou a origem do seu front |
 
-## Funcionalidades
+Não coloque usuário ou senha reais no código ou no GitHub.
 
-- Home: apresentação e acesso às principais funcionalidades.
-- Sobre: problema, solução e impacto esperado.
-- Integrantes: equipe e RMs.
-- FAQ: perguntas frequentes com acordeão interativo.
-- Contato: formulário demonstrativo com validação (não envia mensagens).
-- Ocorrências: GET real, busca local e filtro de categorias.
-- Nova ocorrência: formulário validado e POST real.
-- Detalhe da ocorrência: rota dinâmica `/ocorrencias/:id` com GET real.
-- Layout responsivo, navegação mobile e mensagens de carregamento, erro e vazio.
+4. Execute a classe `CidadeAtivaApplication`. Como alternativa, com as variáveis configuradas no terminal, rode `mvn spring-boot:run`.
+5. Teste `GET http://localhost:8081/health` e `GET http://localhost:8081/categorias` no Insomnia. Sem a variável `PORT`, a porta padrão é 8080.
 
-## Estrutura
+## Testar no Insomnia
 
-```text
-src/
-  components/    Componentes compartilhados (Header, Footer, Layout, Feedback, Cards)
-  data/          Dados de identificação dos integrantes
-  pages/         Páginas e rotas da aplicação
-  services/      Funções Fetch de integração com a API Java
-  types/         Interfaces e tipos TypeScript
-  utils/         Funções de apresentação de categorias e datas
-  App.tsx        Definição das rotas
-  main.tsx       Inicialização React
-  index.css      Diretivas do Tailwind e estilos compartilhados
-```
+Importe `CidadeAtiva_Insomnia.json` e ajuste `base_url` para `http://localhost:8081`.
+Cadastre cidadão, bairro e categoria antes de cadastrar uma ocorrência. Use os IDs retornados nas próximas requisições.
 
-## Como executar
+Principais rotas: `/cidadaos`, `/bairros`, `/categorias`, `/ocorrencias` e `/ocorrencias/{ocorrenciaId}/atualizacoes`.
+As coleções permitem GET e POST; os registros com `/{id}` permitem GET, PUT e DELETE.
+Para reabrir uma ocorrência de RESOLVIDA para PENDENTE, informe uma justificativa em `observacao`.
 
-Requisitos: Node.js 20 ou superior e npm.
-
-```bash
-npm install
-cp .env.example .env
-npm run dev
-```
-
-Antes de testar a integração, edite `.env` para inserir a **URL real da API Java publicada**. O endereço mostrado em `.env.example` é apenas um marcador e não é uma API funcional.
-
-### Build de produção
-
-```bash
-npm run build
-npm run preview
-```
-
-## Contrato da API Java
-
-Consulte `CONTRATO_API_JAVA.md` com as rotas e os campos esperados. O front-end só atende completamente ao critério de integração quando a equipe Java disponibilizar o serviço remoto e os fluxos GET e POST forem testados.
-
-**API Java:** PENDENTE - substituir pela URL pública real do backend.
-
-## Deploy na Vercel
-
-1. Envie este projeto para um repositório público do GitHub.
-2. Importe o repositório na Vercel usando preset Vite.
-3. Configure `VITE_API_URL` com a URL real e `VITE_API_OCORRENCIAS_PATH` com a rota correta.
-4. Faça o deploy e teste a Home, as rotas internas e os fluxos GET/POST.
-5. Confirme configuração CORS na API Java.
-
-O arquivo `vercel.json` já contém o rewrite para suportar acesso direto às rotas SPA.
-
-**Link do repositório GitHub:** PENDENTE - inserir URL real.
-
-**Link do front-end na Vercel:** PENDENTE - inserir URL real.
-
-**Link do vídeo YouTube (máximo 3 minutos):** PENDENTE - inserir URL real.
-
-**Contato da equipe:** PENDENTE - informar canal institucional de contato, se utilizado.
-
-## Integrantes
-
-| Integrante | RM |
-| --- | --- |
-| João Arthur Maia Almeida | 573458 |
-| Matheus Nogueira Quintas | 572542 |
-| Thiago Dias Gomes | 569675 |
-| Lucas José Paolillo Vasconcelos | 565561 |
-| Guilherme Ribeiro | 573890 |
-
-Turma: **PENDENTE - confirmar identificação exata da turma.**
-
-## Versionamento
-
-O enunciado exige um **mínimo de 15 commits no total e cinco commits por integrante**. Se todos os cinco alunos constarem como integrantes, a equipe deve organizar pelo menos 25 commits, incluindo contribuições reais e identificadas de cada participante. O guia PDF distribui os 16 commits principais de front-end entre Matheus e João, mas **não substitui a exigência dos outros três integrantes**.
-
-## Vídeo e apresentação
-
-Gravar vídeo de até 3 minutos, mostrando páginas, navegação, responsividade e a API real. A apresentação presencial está prevista para 23 a 27/11, com participação oral de todos os membros.
-
-## Uso de IA
-
-Ferramentas de IA foram utilizadas como apoio na elaboração inicial e na revisão do front-end. A equipe deve revisar, testar e compreender todo o código antes da entrega e descrever fielmente o uso de IA conforme as orientações da FIAP.
-
-## Checklist de entrega
-
-- [ ] URL pública da API Java configurada e acessível
-- [ ] GET, POST e detalhe testados com dados reais
-- [ ] CORS liberado para o domínio Vercel
-- [ ] Rotas e formulários testados em mobile, tablet e desktop
-- [ ] Repositório público e participações reais dos cinco integrantes
-- [ ] URLs finais inseridas neste README
-- [ ] Vídeo publicado com até 3 minutos
-- [ ] ZIP com menos de 50 MB, sem `node_modules` ou `.env`
-- [ ] Entrega no Portal FIAP até 19/11/2026, às 23h55
